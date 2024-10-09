@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "name": "sample-app",
+  "description": "for practical test",
+  "version": "1.0.0",
+  "main": "app.js",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/frengkysorituamanurung/sample-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/frengkysorituamanurung/sample-app/issues"
+  },
+  "homepage": "https://gitlab.com/frengkysorituamanurung/sample-app#readme"
+}
