@@ -33,51 +33,54 @@ jobs:
     - name: Login to DockerHub
       uses: docker/login-action@v1
       with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build and Push
+    - name: Build and Push Docker image
       id: docker_build
       uses: docker/build-push-action@v2
       with:
-          push: true
-          tags: frengkysorituamanurung/sample-app:latest
-    
+        push: true
+        tags: frengkysorituamanurung/sample-app:latest
+
+    # Step 1: Generate SSH Key
     - name: Generate SSH Key
+      id: generate_ssh_key
       run: |
         ssh-keygen -t rsa -b 4096 -f my_key -N ""
-        cat my_key.pub
-    
-    - name: Add SSH Key to Droplet
+        echo "::set-output name=private_key::$(cat my_key)"
+        echo "::set-output name=public_key::$(cat my_key.pub)"
+
+    # Step 2: Add SSH Public Key to Droplet
+    - name: Add SSH Public Key to Droplet
       uses: appleboy/ssh-action@v0.1.3
       with:
         host: ${{ secrets.DROPLET_HOST }}
         username: ${{ secrets.DROPLET_USER }}
-        password: ${{ secrets.DROPLET_PASSWORD }}
+        password: ${{ secrets.DROPLET_PASSWORD }} # optional if using password initially
         port: 22
         script: |
           mkdir -p ~/.ssh
-          echo "${{ steps.generate_ssh_key.outputs.key }}" >> ~/.ssh/authorized_keys
+          echo "${{ steps.generate_ssh_key.outputs.public_key }}" >> ~/.ssh/authorized_keys
           chmod 600 ~/.ssh/authorized_keys
-    
+
+    # Step 3: Deploy to Droplet using the private key
     - name: Deploy to Droplet
       uses: appleboy/ssh-action@v0.1.3
       with:
         host: ${{ secrets.DROPLET_HOST }}
         username: ${{ secrets.DROPLET_USER }}
-        key: ./my_key
+        key: my_key
         port: 22
         script: |
           # Install Docker if not present
           if ! [ -x "$(command -v docker)" ]; then
-              curl -fsSL https://get.docker.com -o get-docker.sh
-              sh get-docker.sh
-              sudo usermod -aG docker $USER
+            curl -fsSL https://get.docker.com -o get-docker.sh
+            sh get-docker.sh
+            sudo usermod -aG docker $USER
           fi
           # Pull the latest Docker image and run it
           docker pull frengkysorituamanurung/sample-app:latest
           docker stop sample-app || true
           docker rm sample-app || true
           docker run -d --name sample-app -p 80:80 frengkysorituamanurung/sample-app:latest
-  
-    
