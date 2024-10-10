@@ -47,9 +47,9 @@ jobs:
     - name: Generate SSH Key
       id: generate_ssh_key
       run: |
-        ssh-keygen -t rsa -b 4096 -f my_key -N ""
-        echo "::set-output name=private_key::$(cat my_key)"
-        echo "::set-output name=public_key::$(cat my_key.pub)"
+        ssh-keygen
+        echo "::set-output name=private_key::$(cat id_rsa)"
+        echo "::set-output name=public_key::$(cat id_rsa.pub)"
 
     # Step 2: Add SSH Public Key to Droplet
     - name: Add SSH Public Key to Droplet
@@ -70,7 +70,7 @@ jobs:
       with:
         host: ${{ secrets.DROPLET_HOST }}
         username: ${{ secrets.DROPLET_USER }}
-        key: my_key
+        key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
         port: 22
         script: |
           # Install Docker if not present
