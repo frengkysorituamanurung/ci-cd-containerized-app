@@ -52,11 +52,12 @@ jobs:
         key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
         port: 22
         script: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io
+          sudo apt update
+          sudo apt install docker.io
           sudo systemctl start docker
           sudo systemctl enable docker
           docker pull frengkysorituamanurung/sample-app:latest
           docker stop sample-app || true
           docker rm sample-app || true
           docker run -d --name sample-app -p 80:80 frengkysorituamanurung/sample-app:latest
+      options: "-o StrictHostKeyChecking=no"
