@@ -48,8 +48,6 @@ jobs:
       id: generate_ssh_key
       run: |
         ssh-keygen
-        echo "::set-output name=private_key::$(cat id_rsa)"
-        echo "::set-output name=public_key::$(cat id_rsa.pub)"
 
     # Step 2: Add SSH Public Key to Droplet
     - name: Add SSH Public Key to Droplet
