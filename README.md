@@ -1,4 +1,6 @@
 # CI/CD Pipeline with Docker, GitHub Actions, and Deployment to DigitalOcean
+<<<<<<< HEAD
+=======
 
 This repository demonstrates a complete CI/CD pipeline using containerization with Docker and GitHub Actions. It automates the process of building a Docker image, pushing it to Docker Hub, and deploying it to a DigitalOcean droplet. The application used is a simple example, and the focus is on the CI/CD pipeline implementation.
 
@@ -155,3 +157,8 @@ Visit the deployed application at:
 The pipeline includes a step that connects to your DigitalOcean droplet via SSH, pulls the latest Docker image from Docker Hub, and runs it in a container. The application will be accessible on **port 80** of the droplet.
 
 ![image](https://github.com/user-attachments/assets/2835ecb6-21c4-4dd2-9a4e-3e895a65c4a2)
+
+
+
+
+>>>>>>> 7cfe26179363fba845d97ca0a8091410789c7c13
