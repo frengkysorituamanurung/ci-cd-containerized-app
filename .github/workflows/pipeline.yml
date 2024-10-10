@@ -43,7 +43,7 @@ jobs:
         push: true
         tags: frengkysorituamanurung/sample-app:latest
 
-    - name: Setup SSH Key
+    - name: Setup SSH Keys
       run: |
         mkdir -p ~/.ssh
         echo "${{ secrets.DO_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
