@@ -52,13 +52,10 @@ jobs:
         key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
         port: 22
         script: |
-          # Install Docker if not present
-          if ! [ -x "$(command -v docker)" ]; then
-            curl -fsSL https://get.docker.com -o get-docker.sh
-            sh get-docker.sh
-            sudo usermod -aG docker $USER
-          fi
-          # Pull the latest Docker image and run it
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+          sudo systemctl start docker
+          sudo systemctl enable docker
           docker pull frengkysorituamanurung/sample-app:latest
           docker stop sample-app || true
           docker rm sample-app || true
