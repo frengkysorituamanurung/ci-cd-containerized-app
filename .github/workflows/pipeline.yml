@@ -53,7 +53,7 @@ jobs:
       run: ssh-keyscan -H -H ${{ secrets.DROPLET_HOST }} >> ~/.ssh/known_hosts
     
     - name: Test SSH connection
-      run: ssh -i .ssh/id_rsa -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_HOST }} 'echo "SSH connection successful!"'
+      run: ssh -i ~/.ssh/id_rsa root@${{ secrets.DROPLET_HOST }} 'echo "SSH connection successful!"'
 
     - name: Deploy to DigitalOcean Droplet
       if: github.ref == 'refs/heads/main'
